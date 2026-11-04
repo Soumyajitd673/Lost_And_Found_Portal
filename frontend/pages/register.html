@@ -13,21 +13,21 @@
         <h1>Campus Lost and Found Portal</h1>
         <h2>Register</h2>
 
-        <form>
+        <form id="registerForm">
             <label>Name:</label>
-            <input type="text" name="name" required>
+            <input id="inputName" type="text" name="name" required>
 
             <label>ID Number:</label>
-            <input type="text" name="id_number" required>
+            <input id="inputID" type="text" name="id_number" required>
 
             <label>College Email:</label>
-            <input type="email" name="email" required>
+            <input id="inputEmail" type="email" name="email" required>
 
             <label>Password:</label>
-            <input type="password" name="password" required>
+            <input id="inputPass" type="password" name="password" required>
 
             <label>Confirm Password:</label>
-            <input type="password" name="confirm_password" required>
+            <input id="confirmPass" type="password" name="confirm_password" required>
 
             <button type="submit">Register</button>
         </form>
@@ -35,6 +35,7 @@
         <p>Already have an account? <a href="login.html">Login here</a></p>
 
     </div>
+    <script src="../js/register.js"></script>
 </body>
 
 </html>
