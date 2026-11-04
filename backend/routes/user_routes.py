@@ -5,6 +5,8 @@ from backend.schema.Login_Register_Info_Schema import Login_Info, Register_Info
 router = APIRouter(prefix="/user", tags=["user"])
 
 
+
+
 @router.get("/login")
 def get_login_page(request: Request):
 
