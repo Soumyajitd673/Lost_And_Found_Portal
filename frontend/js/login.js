@@ -19,7 +19,33 @@ loginForm.addEventListener("submit",function(event){
         return;
     }
     }
-    alert("Login Successful");
+    
+    const userData = {
+        email : inputEmail.value.trim(),
+        pass : inputPass.value.trim()
+    }
+     fetch("http://localhost:8000/user/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+    }).then(response => {
+        if (!response.ok){
+            throw new Error("Login request failed");
+        }
+        return response.json();
+    }).then(data => {
+        if (data.login === "successful"){
+            alert("Login successful");
+        }
+        else{
+            alert("Login Failed");
+        }
+    }).catch(error => {
+        console.log(error);
+        alert("Server Connection Failed");
+    })
     
 
 })

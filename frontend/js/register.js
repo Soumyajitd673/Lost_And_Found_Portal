@@ -64,7 +64,34 @@ registerForm.addEventListener("submit", function(event) {
         return;
     }
 
-    alert("Registration successful");
-    window.location.href = "login.html";
+    
+    const userData = {
+        name: inputName.value.trim(),
+        ID: inputID.value.trim(),
+        email: inputEmail.value.trim(),
+        pass : inputPass.value
+    }
+    fetch("http://localhost:8000/user/register", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(userData)
+}).then(response => {
+    if (!response.ok){
+        throw new Error("Registration request failed");
+    }
+    return response.json();
+}).then(data => {
+    if (data.register === "successful"){
+        alert("Registration successful");
+    }
+    else{
+        alert("Registration Failed");
+    }
+}).catch(error => {
+    console.log(error);
+    alert("Server Connection Failed");
+})
     
 });
