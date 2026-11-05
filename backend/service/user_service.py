@@ -44,7 +44,7 @@ def get_user_by_email(db: Session, email: str):
 
 def authenticate_user(db: Session, data: Login_Info):
 
-    user = get_user_by_email(data.email)
+    user = get_user_by_email(db, data.email)
 
     if user is None or user.role != data.role:
         return None

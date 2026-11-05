@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime
 from sqlalchemy.sql import func
-from database.db import Base
+from backend.database.db import Base
 
 class Item(Base):
 
