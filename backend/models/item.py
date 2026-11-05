@@ -18,7 +18,7 @@ class Item(Base):
 
     location = Column(String(255))
 
-    image_url = Column(String(255))
+    image_url = Column(String(255), nullable=False)
 
     reported_by = Column(Integer, ForeignKey("users.id"), nullable=False)
 
