@@ -17,8 +17,12 @@
             <label>Name:</label>
             <input id="inputName" type="text" name="name" required>
 
-            <label>ID Number:</label>
-            <input id="inputID" type="text" name="id_number" required>
+            <label for="role">Role:</label>
+            <select id="role" name="role" required>
+                <option value="student">Student</option>
+                <option value="faculty">Faculty</option>
+                <option value="staff">Staff</option>
+            </select>
 
             <label>College Email:</label>
             <input id="inputEmail" type="email" name="email" required>
@@ -32,7 +36,7 @@
             <button type="submit">Register</button>
         </form>
 
-        <p>Already have an account? <a href="login.html">Login here</a></p>
+        <p>Already have an account? <a href="http://localhost:8000/user/login">Login here</a></p>
 
     </div>
     <script src="../js/register.js"></script>
