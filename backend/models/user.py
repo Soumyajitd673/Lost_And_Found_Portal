@@ -9,6 +9,8 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
+    role = Column(String(100), nullable=False)
+
     name = Column(String(100), nullable=False)
 
     email = Column(String(100), unique=True, nullable=False, index=True)
