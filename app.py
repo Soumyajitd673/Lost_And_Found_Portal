@@ -1,14 +1,24 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from backend.routes import user_routes, item_routes
+from starlette.middleware.sessions import SessionMiddleware
+from dotenv import load_dotenv
+import os
 
+from backend.routes import user_routes, item_routes
 from backend.database.db import Base, engine
-from backend.models import user  # add "item" here only if backend/models/item.py exists
+from backend.models import user
+
 
 Base.metadata.create_all(bind=engine)
 
-
 app = FastAPI()
+
+load_dotenv()
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=os.getenv("SESSION_KEY"),
+    max_age=3600
+)
 
 
 app.mount("/css", StaticFiles(directory="frontend/css"), name="css")
