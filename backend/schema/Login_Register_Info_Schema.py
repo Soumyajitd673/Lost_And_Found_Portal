@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from typing import Literal
+from pydantic import BaseModel, Field
 
 class Login_Info(BaseModel):
 
@@ -9,6 +10,6 @@ class Login_Info(BaseModel):
 class Register_Info(BaseModel):
 
     name: str
-    role: str
-    password: str
+    role: Literal["student", "faculty"]
+    password: str = Field(alias="pass")
     email: str
