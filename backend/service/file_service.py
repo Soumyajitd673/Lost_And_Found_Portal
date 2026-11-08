@@ -13,7 +13,7 @@ def save_item_image(image: UploadFile):
     with open(upload_dir / filename, "wb") as f:
         f.write(image.file.read())
 
-    return f"backend/uploads/item_images/{filename}"
+    return f"/uploads/item_images/{filename}"
 
 def delete_item_image(image_path: str):
 
