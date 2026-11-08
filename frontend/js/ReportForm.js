@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch('form.html')
+    fetch('../pages/ReportForm.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('modal-container').innerHTML = data;
@@ -66,7 +66,7 @@ function setupModalEvents() {
         modalSubtitle.innerText = "Help us return this item to its rightful owner. Please provide clear details.";
         labelDate.innerHTML = 'Date Found <span class="required">*</span>';
         
-        locationWrapper.style.width = "auto"; // half width ke liye
+        locationWrapper.style.width = "auto";
         labelLocation.innerHTML = 'Where did you find it? <span class="required">*</span>';
         
         currentLocationGrp.classList.remove('hidden');
@@ -75,24 +75,63 @@ function setupModalEvents() {
         submitBtn.classList.add('found-btn');
     }
 
-    itemForm.addEventListener('submit', (e) => {
+    itemForm.addEventListener('submit', async(e) => {
         e.preventDefault();
         
         const type = document.querySelector('input[name="reportType"]:checked').value;
-        const itemName = document.getElementById('itemName').value;
+        const itemDataObject = {
+            title: document.getElementById('itemName').value, 
+            description: document.getElementById('itemDescription') ? document.getElementById('itemDescription').value : null,
+            category: document.getElementById('itemCategory') ? document.getElementById('itemCategory').value : "Other",
+            location: type === 'lost' 
+                ? (document.getElementById('itemLocation') ? document.getElementById('itemLocation').value : "Unknown")
+                : (document.getElementById('currentLocation') ? document.getElementById('currentLocation').value : "Unknown")
+        };
+        const formData = new FormData();
+        formData.append('item_data', JSON.stringify(itemDataObject));
         
-        console.log(`Khoj Portal -> ${type.toUpperCase()} Item Reported: ${itemName}`);
-        
-        itemForm.classList.add('hidden');
-        const successMsg = document.getElementById('successMessage');
-        successMsg.classList.remove('hidden');
-        
-        setTimeout(() => {
-            modal.classList.remove('show');
-            itemForm.classList.remove('hidden');
-            successMsg.classList.add('hidden');
-            itemForm.reset();
-            resetToLostState();
-        }, 2500);
+        const imageInput = document.getElementById('itemImage'); 
+        if (imageInput && imageInput.files.length > 0) {
+            formData.append('image', imageInput.files[0]);
+        } else {
+            alert("Please upload an image.");
+            return;
+        }
+
+        // 3. Determine endpoint
+        const endpoint = type === 'lost' ? '/item/lost' : '/item/found';
+
+        // 4. Send to FastAPI
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                body: formData,
+                // Uncomment if you use cookies for get_current_user:
+                // credentials: 'include',
+            });
+
+            if (response.ok) {
+                console.log(`Campus Find -> ${type.toUpperCase()} Item Reported: ${itemDataObject.title}`);
+                
+                itemForm.classList.add('hidden');
+                const successMsg = document.getElementById('successMessage');
+                successMsg.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    modal.classList.remove('show');
+                    itemForm.classList.remove('hidden');
+                    successMsg.classList.add('hidden');
+                    itemForm.reset();
+                    resetToLostState();
+                }, 2500);
+            } else {
+                const errorData = await response.json();
+                console.error("Backend Error:", errorData);
+                alert("Failed to report item: " + (errorData.detail || "Unknown error"));
+            }
+        } catch (error) {
+            console.error("Network error:", error);
+            alert("Could not connect to the server.");
+        }
     });
 }
