@@ -6,15 +6,23 @@ from backend.schema.Item_Schema import Item_Schema
 from backend.database.db import get_db
 from backend.service import file_service, item_service
 from backend.curr_user import get_current_user
+from backend.templates import templates
 
 
 router = APIRouter(prefix="/item", tags=["item"])
 
 
 @router.get("/lost")
-def get_lost_items(request: Request):
+def get_lost_items(request: Request, db: Session = Depends(get_db)):
 
-    return {"html_page": "success", "data": "success"}
+    lost_items = item_service.get_items(db, "Lost")
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ItemsPage.html",
+        context={"items": lost_items}
+    )
+
 
 @router.post("/lost")
 def report_lost_item(
@@ -41,9 +49,16 @@ def report_lost_item(
     
 
 @router.get("/found")
-def get_lost_items(request: Request):
+def get_found_items(request: Request, db: Session = Depends(get_db)):
 
-    return {"html_page": "success", "data": "success"}
+    found_items = item_service.get_items(db, "Found")
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ItemsPage.html",
+        context={"items": found_items}
+    )
+
 
 @router.post("/found")
 def report_found_item(

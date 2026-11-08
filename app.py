@@ -6,7 +6,7 @@ import os
 
 from backend.routes import user_routes, item_routes
 from backend.database.db import Base, engine
-from backend.models import user
+from backend.models import user, item, category
 
 
 Base.metadata.create_all(bind=engine)
@@ -23,6 +23,7 @@ app.add_middleware(
 
 app.mount("/css", StaticFiles(directory="frontend/css"), name="css")
 app.mount("/js", StaticFiles(directory="frontend/js"), name="js")
+app.mount("/uploads", StaticFiles(directory="backend/uploads/item_images"))
 
 app.include_router(user_routes.router)
 
