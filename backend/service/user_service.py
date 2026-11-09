@@ -18,6 +18,7 @@ def create_user(db: Session, data: Register_Info):
 
     user = User(
         name=data.name,
+        role="user",
         email=data.email,
         password_hash=hash_password(data.password)
     )

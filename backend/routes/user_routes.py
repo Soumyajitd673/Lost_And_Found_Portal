@@ -19,13 +19,19 @@ def get_login_page(request: Request):
 
 
 @router.post("/login")
-def login(login_info: Login_Info, db: Session = Depends(get_db)):
+def login(
+        login_info: Login_Info,
+        request: Request,
+        db: Session = Depends(get_db)
+    ):
     
     user = user_service.authenticate_user(db, login_info)
     
     if not user:
         raise HTTPException(status_code=400, detail="Invalid credentials")
-    
+
+    request.session["user.id"] = user.id
+
     return True
 
 
@@ -39,12 +45,24 @@ def get_register_page(request: Request):
 
 
 @router.post("/register")
-def register(register_info: Register_Info, db: Session = Depends(get_db)):
+def register(
+    register_info: Register_Info,
+    request: Request,
+    db: Session = Depends(get_db)
+):
 
     try:
         user = user_service.create_user(db, register_info)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+    request.session["user_id"] = user.id
+
     return True
 
+@router.post("/logout")
+def logout(request: Request):
+
+    request.session["user_id"] = None
+
+    return True
