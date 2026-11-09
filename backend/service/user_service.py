@@ -18,7 +18,6 @@ def create_user(db: Session, data: Register_Info):
 
     user = User(
         name=data.name,
-        role=data.role,
         email=data.email,
         password_hash=hash_password(data.password)
     )
@@ -46,7 +45,7 @@ def authenticate_user(db: Session, data: Login_Info):
 
     user = get_user_by_email(db, data.email)
 
-    if user is None or user.role != data.role:
+    if user is None:
         return None
 
     if not verify_password(data.password, user.password_hash):

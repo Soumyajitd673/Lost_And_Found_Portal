@@ -1,10 +1,10 @@
 const emailRegex = /^[a-zA-Z0-9._%+-]+@iitbhilai\.ac\.in$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const nameRegex = /^[a-zA-Z ]+$/;
-const idRegex = /^[a-zA-Z0-9]+$/;
+
 
 let inputName = document.querySelector("#inputName");
-let inputID = document.querySelector("#inputID");
+
 let inputEmail = document.querySelector("#inputEmail");
 let inputPass = document.querySelector("#inputPass");
 let confirmPass = document.querySelector("#confirmPass");
@@ -23,17 +23,6 @@ registerForm.addEventListener("submit", function(event) {
         alert("Invalid name");
         return;
     }
-
-    if (inputID.value.trim().length === 0) {
-        alert("Please enter your ID Number");
-        return;
-    }
-
-    if (!idRegex.test(inputID.value.trim())) {
-        alert("Invalid ID Number");
-        return;
-    }
-
     if (inputEmail.value.length === 0) {
         alert("Please enter your college email");
         return;
@@ -65,33 +54,35 @@ registerForm.addEventListener("submit", function(event) {
     }
 
     
-    const userData = {
-        name: inputName.value.trim(),
-        ID: inputID.value.trim(),
-        email: inputEmail.value.trim(),
-        pass : inputPass.value
-    }
-    fetch("http://localhost:8000/user/register", {
+   const userData = {
+    name: inputName.value.trim(),
+    email: inputEmail.value.trim(),
+    password: inputPass.value
+};
+
+fetch("http://localhost:8000/user/register", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
     },
     body: JSON.stringify(userData)
-}).then(response => {
-    if (!response.ok){
-        throw new Error("Registration request failed");
-    }
-    return response.json();
-}).then(data => {
-    if (data.register === "successful"){
-        alert("Registration successful");
-    }
-    else{
-        alert("Registration Failed");
-    }
-}).catch(error => {
-    console.log(error);
-    alert("Server Connection Failed");
 })
+.then(response => {
+    if (!response.ok) {
+        return response.json().then(error => {
+            throw new Error(error.detail || "Registration failed");
+        });
+    }
+
+    return response.json();
+})
+.then(data => {
+    alert("Registration successful!");
+    window.location.href = "Dashboard.html";
+})
+.catch(error => {
+    alert(error.message);
+    console.error(error);
+});
     
 });
