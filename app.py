@@ -23,7 +23,7 @@ app.add_middleware(
 
 app.mount("/css", StaticFiles(directory="frontend/css"), name="css")
 app.mount("/js", StaticFiles(directory="frontend/js"), name="js")
-app.mount("/uploads", StaticFiles(directory="backend/uploads/item_images"))
+app.mount("/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
 
 app.include_router(user_routes.router)
 
