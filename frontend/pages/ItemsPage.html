@@ -39,7 +39,7 @@
                     {{ item.title }} <br>
                     {{ item.description or "-" }}
                 </td>
-                <td>{{ item.category_name }}</td>
+                <td>{{ item.category.name }}</td>
                 <td>{{ item.location }}</td>
                 <td>{{ item.created_at.strftime("%d %b %Y") }}</td>
                 <td>{{ item.status }}</td>
