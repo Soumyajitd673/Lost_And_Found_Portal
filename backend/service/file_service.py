@@ -18,7 +18,9 @@ def save_item_image(image: UploadFile):
 def delete_item_image(image_path: str):
 
     if image_path:
-        path = Path(image_path)
+
+        filename = Path(image_path).name
+        path = upload_dir / filename
 
         if path.exists():
             path.unlink()
