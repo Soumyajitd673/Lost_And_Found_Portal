@@ -54,3 +54,10 @@ def authenticate_user(db: Session, data: Login_Info):
         return None
 
     return user
+
+
+def is_admin(db: Session, user_id: int):
+
+    user = get_user_by_id(db, user_id)
+    return user.role == "admin"
+   
