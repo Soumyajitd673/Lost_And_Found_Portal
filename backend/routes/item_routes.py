@@ -20,7 +20,7 @@ def get_lost_items(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": lost_items}
+        context={"items": lost_items, "page_title": "Reported Lost Items"}
     )
 
 
@@ -29,13 +29,13 @@ def report_lost_item(
     item_data: str = Form(...),
     image: UploadFile = File(...),
     db: Session = Depends(get_db),
-    user_id: int = Depends(get_current_user)
+    user_id: int = 1
 ):
 
     image_path = None
 
     try:
-        data = Item_Schema.model_dump_json(item_data)
+        data = Item_Schema.model_validate_json(item_data)
         image_path = file_service.save_item_image(image)
         item = item_service.register_item(data, "Lost", image_path, user_id, db)
 
@@ -56,7 +56,7 @@ def get_found_items(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": found_items}
+        context={"items": found_items, "page_title": "Reported Found Items"}
     )
 
 
@@ -71,7 +71,7 @@ def report_found_item(
     image_path = None
 
     try:
-        data = Item_Schema.model_dump_json(item_data)
+        data = Item_Schema.model_validate_json(item_data)
         image_path = file_service.save_item_image(image)
         item = item_service.register_item(data, "Found", image_path, user_id, db)
 

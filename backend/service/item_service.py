@@ -1,11 +1,18 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.sql import func
 
 from backend.models.item import Item
+from backend.models.category import Category 
 from backend.schema.Item_Schema import Item_Schema
 
 
+def get_category_id(db: Session, category: str):
+
+    category_id = db.scalar(select(Category.id).where(Category.name == category))
+
+    return category_id
 
 def register_item(
         data: Item_Schema, 
@@ -19,7 +26,7 @@ def register_item(
         report=report,
         title=data.title,
         description=data.description,
-        category=data.category,
+        category=get_category_id(db, data.category),
         status="Active",
         location=data.location,
         image_url=image_path,
@@ -30,11 +37,12 @@ def register_item(
 
     try:
         db.commit()
-    except:
+    except SQLAlchemyError as e:
         db.rollback()
-        raise ValueError("Error from database")
+        raise ValueError(str(e))
 
-    db.refresh()
+    db.refresh(item)
+
     return item
 
 
