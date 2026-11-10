@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+<div class="container">
+    
+
+    <main class="main">
+        <header>
+            <div>
+                <h1>Issue Management</h1>
+                <p>Manage and resolve user complaints.</p>
+            </div>
+            <span class="admin">Administrator</span>
+        </header>
+
+        <section class="stats">
+            <div class="stat">
+                <h2>12</h2>
+                <p>Total Reports</p>
+            </div>
+            <div class="stat">
+                <h2>05</h2>
+                <p>Pending</p> 
+            </div>
+            <div class="stat">
+                <h2>07</h2>
+                <p>Resolved</p>
+            </div>
+        </section>
+
+        <section class="reports">
+            <h2>User Reports</h2>
+
+            <div class="report-card">
+                <div class="report-header">
+                    <h3>Report #001</h3>
+                    <span class="pending">Pending</span>
+                </div>
+
+                <div class="users">
+                    <div>
+                        <small>REPORTED BY</small>
+                        <h4>Aarav Sharma</h4>
+                        <p>aarav@iitbhilai.ac.in</p>
+                    </div>
+                    <div>
+                        <small>REPORTED USER</small>
+                        <h4>Rahul Verma</h4>
+                        <p>rahul@iitbhilai.ac.in</p>
+                    </div>
+                </div>
+
+                <p class="description">
+                    Reported for inappropriate behaviour during an item exchange.
+                </p>
+
+                <button class="resolve">Resolve Issue</button>
+            </div>
+
+            <div class="report-card">
+                <div class="report-header">
+                    <h3>Report #002</h3>
+                    <span class="resolved">Resolved</span>
+                </div>
+
+                <div class="users">
+                    <div>
+                        <small>REPORTED BY</small>
+                        <h4>Priya Mehta</h4>
+                        <p>priya@iitbhilai.ac.in</p>
+                    </div>
+                    <div>
+                        <small>REPORTED USER</small>
+                        <h4>Aditya Kumar</h4>
+                        <p>aditya@iitbhilai.ac.in</p>
+                    </div>
+                </div>
+
+                <p class="description">
+                    Complaint regarding misleading information about a found item.
+                </p>
+
+                <button class="resolved-btn" disabled>Resolved</button>
+            </div>
+        </section>
+    </main>
+</div>
+
+</body>
+</html>

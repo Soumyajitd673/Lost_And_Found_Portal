@@ -1,0 +1,113 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f5f9;
+    color: #26344a;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 220px;
+    background: #243653;
+    color: white;
+    padding: 25px 18px;
+}
+
+.sidebar h2 { font-size: 20px; }
+.sidebar p { color: #b7c4d8; margin: 8px 0 35px; }
+
+.sidebar a {
+    display: block;
+    color: #dce4f0;
+    text-decoration: none;
+    padding: 13px;
+    margin: 8px 0;
+    border-radius: 6px;
+}
+
+.sidebar a:hover, .sidebar .active { background: #3a5072; }
+
+.main {
+    flex: 1;
+    padding: 35px;
+}
+
+header, .report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header p { color: #8290a4; margin-top: 8px; }
+.admin { background: white; padding: 12px; border-radius: 8px; }
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.stat, .reports, .report-card {
+    background: white;
+    padding: 22px;
+    border-radius: 10px;
+}
+
+.stat h2 { color: #315b91; margin-bottom: 8px; }
+.stat p, .description { color: #7d899b; }
+
+.reports h2 { margin-bottom: 20px; }
+
+.report-card {
+    border: 1px solid #e8edf4;
+    margin-bottom: 18px;
+}
+
+.report-header { margin-bottom: 20px; }
+.report-header h3 { font-size: 16px; }
+
+.pending, .resolved {
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+.pending { background: #fff1d6; color: #b87919; }
+.resolved { background: #e2f5e9; color: #25834c; }
+
+.users { display: flex; gap: 80px; margin-bottom: 20px; }
+.users small { color: #8290a4; font-size: 10px; }
+.users h4 { margin: 7px 0; }
+.users p { font-size: 12px; color: #8290a4; }
+
+.description { font-size: 13px; margin-bottom: 20px; }
+
+button {
+    border: none;
+    padding: 10px 17px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.resolve { background: #243653; color: white; }
+.resolve:hover { background: #3a5072; }
+.resolved-btn { background: #e2f5e9; color: #25834c; cursor: default; }
+
+@media (max-width: 700px) {
+    .sidebar { width: 150px; }
+    .main { padding: 18px; }
+    .stats { grid-template-columns: 1fr; }
+    .users { flex-direction: column; gap: 18px; }
+}
+

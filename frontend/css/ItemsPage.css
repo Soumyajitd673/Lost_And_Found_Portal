@@ -90,6 +90,19 @@ p {
     border-radius: 6px;
     cursor: pointer;
 }
+.reported {
+    width: auto;
+    padding: 8px 14px;
+    margin-top: 10px;
+    background: linear-gradient(135deg, #ff4b4b, #d90429);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
 
 .btn-report:hover {
     background-color: #263856;

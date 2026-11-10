@@ -99,7 +99,7 @@ function setupModalEvents() {
         }
 
         // 3. Determine endpoint
-        const endpoint = type === 'lost' ? '/item/lost' : '/item/found';
+        const endpoint = type === 'lost' ? 'http://127.0.0.1:8000/item/lost' : '/http://127.0.0.1:8000/item/found';
 
         // 4. Send to FastAPI
         try {
