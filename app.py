@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import os
 
 from backend.routes import user_routes, item_routes
+from backend.routes import otp_routes
 from backend.database.db import Base, engine
 from backend.models.user import User
 from backend.models.item import Item
@@ -45,6 +46,7 @@ app.mount("/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
 
 app.include_router(user_routes.router)
 app.include_router(item_routes.router)
+app.include_router(otp_routes.router)
 
 
 @app.get("/")
