@@ -75,3 +75,29 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+.otp-row {
+    display: flex;
+    gap: 8px;
+}
+
+.otp-row input {
+    flex: 1;
+    min-width: 0;
+}
+
+.otp-row button {
+    width: auto;
+    margin-top: 0;
+}
+
+.status {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+button:disabled,
+button:disabled:hover {
+    background-color: #999;
+    cursor: not-allowed;
+}
