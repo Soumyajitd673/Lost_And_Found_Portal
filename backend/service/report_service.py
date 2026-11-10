@@ -1,0 +1,33 @@
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
+
+from backend.schema.Report_Schema import Report_Schema
+from backend.models.report import Report
+
+
+def create_report(db: Session, data: Report_Schema, reporter_id: int, ):
+
+
+    report = Report(
+        reporter_id=reporter_id,
+        reported_user_id=data.reported_user_id,
+        report_description=data.report_description
+    )
+
+    db.add(report)
+
+    try:
+        db.commit()
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise ValueError(str(e))
+
+    db.refresh(report)
+
+    return report
+
+
+def get_all_reports(db: Session):
+    return db.scalars(select(Report)).all()
+
