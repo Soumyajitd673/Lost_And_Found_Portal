@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
+
 from backend.database.db import Base
 
 class Item(Base): 
@@ -14,7 +16,7 @@ class Item(Base):
 
     description = Column(Text)
 
-    category = Column(Integer, ForeignKey("categories.id"), nullable=False)
+    category_id = Column("category", Integer, ForeignKey("categories.id"), nullable=False)
 
     status = Column(String(50), default="Active")
 
@@ -26,3 +28,6 @@ class Item(Base):
 
     created_at = Column(DateTime, server_default=func.now())
 
+
+    category = relationship("Category")
+    reporter = relationship("User")
