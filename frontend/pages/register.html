@@ -18,7 +18,20 @@
             <input id="inputName" type="text" name="name" required>
 
             <label>College Email:</label>
-            <input id="inputEmail" type="email" name="email" required>
+            <div class="otp-row">
+                <input id="inputEmail" type="email" name="email" required>
+                <button id="sendOtpBtn" type="button">Send OTP</button>
+            </div>
+            <div id="emailStatus" class="status"></div>
+
+            <div id="otpSection" style="display: none;">
+                <label>Enter OTP:</label>
+                <div class="otp-row">
+                    <input id="inputOtp" type="text" maxlength="6">
+                    <button id="verifyOtpBtn" type="button">Verify</button>
+                </div>
+                <div id="otpStatus" class="status"></div>
+            </div>
 
             <label>Password:</label>
             <input id="inputPass" type="password" name="password" required>
@@ -26,13 +39,14 @@
             <label>Confirm Password:</label>
             <input id="confirmPass" type="password" name="confirm_password" required>
 
-            <button type="submit">Register</button>
+            <button id="registerBtn" type="submit" disabled>Register</button>
         </form>
 
         <p>Already have an account? <a href="http://localhost:8000/user/login">Login here</a></p>
 
     </div>
     <script src="../js/register.js"></script>
+    <script src="../js/otp.js"></script>
 </body>
 
 </html>

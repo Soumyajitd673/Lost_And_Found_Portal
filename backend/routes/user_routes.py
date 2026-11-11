@@ -7,6 +7,8 @@ from backend.templates import templates
 from backend.database.db import get_db
 from backend.curr_user import get_current_user
 
+from backend.service import otp_service
+
 router = APIRouter(prefix="/user", tags=["user"])
 
 
@@ -52,11 +54,16 @@ def register(
     db: Session = Depends(get_db)
 ):
 
+    # Check if the email is verified
+    if not otp_service.is_email_verified(register_info.email):
+        raise HTTPException(status_code=400, detail="Verify your email before registering.")
+
     try:
         user = user_service.create_user(db, register_info)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+    otp_service.clear_verified_email(register_info.email)
     request.session["user_id"] = user.id
 
     return True

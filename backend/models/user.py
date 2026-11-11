@@ -17,4 +17,5 @@ class User(Base):
 
     password_hash = Column(String(255), nullable=False)
 
+    role = Column(String(20), nullable=False, default="user")
     created_at = Column(DateTime, server_default=func.now())
