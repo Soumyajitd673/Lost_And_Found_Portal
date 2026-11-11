@@ -11,6 +11,8 @@ class User(Base):
 
     name = Column(String(100), nullable=False)
 
+    role = Column(String(50), nullable=False, default='user')
+
     email = Column(String(100), unique=True, nullable=False, index=True)
 
     password_hash = Column(String(255), nullable=False)

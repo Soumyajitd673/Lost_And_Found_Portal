@@ -60,7 +60,7 @@ registerForm.addEventListener("submit", function(event) {
     password: inputPass.value
 };
 
-fetch("http://localhost:8000/user/register", {
+fetch("/user/register", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
@@ -78,7 +78,7 @@ fetch("http://localhost:8000/user/register", {
 })
 .then(data => {
     alert("Registration successful!");
-    window.location.href = "Dashboard.html";
+    window.location.href = "/user/dashboard";
 })
 .catch(error => {
     alert(error.message);

@@ -1,11 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch('../pages/ReportForm.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('modal-container').innerHTML = data;
-            setupModalEvents();
-        })
-        .catch(err => console.error("Error loading form:", err));
+    fetch("/item/report_form")
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Could not load form (" + response.status + ")");
+        }
+        return response.text();
+    })
+    .then(html => {
+        document.getElementById("modal-container").innerHTML = html;
+        setupModalEvents();
+    })
+    .catch(err => console.error("Error loading form:", err));
 });
 
 function setupModalEvents() {

@@ -5,6 +5,7 @@ from backend.schema.Login_Register_Info_Schema import Login_Info, Register_Info
 import backend.service.user_service as user_service
 from backend.templates import templates
 from backend.database.db import get_db
+from backend.curr_user import get_current_user
 
 router = APIRouter(prefix="/user", tags=["user"])
 
@@ -30,7 +31,7 @@ def login(
     if not user:
         raise HTTPException(status_code=400, detail="Invalid credentials")
 
-    request.session["user.id"] = user.id
+    request.session["user_id"] = user.id
 
     return True
 
@@ -63,6 +64,22 @@ def register(
 @router.post("/logout")
 def logout(request: Request):
 
-    request.session["user_id"] = None
+    request.session.clear()
 
     return True
+
+
+@router.get("/dashboard")
+def get_user_dashboard(
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+    ):
+
+    user_name = user_service.get_user_name(user_id, db)
+
+    return templates.TemplateResponse(
+        request=request,
+        name="Dashboard.html",
+        context={"user_name": user_name}
+    )

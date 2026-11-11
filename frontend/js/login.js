@@ -22,9 +22,9 @@ loginForm.addEventListener("submit",function(event){
     
     const userData = {
         email : inputEmail.value.trim(),
-        pass : inputPass.value.trim()
+        password : inputPass.value.trim()
     }
-     fetch("http://localhost:8000/user/login", {
+     fetch("/user/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -36,8 +36,9 @@ loginForm.addEventListener("submit",function(event){
         }
         return response.json();
     }).then(data => {
-        if (data.login === "successful"){
-            alert("Login successful");
+        if (data == true){
+           alert("Login successful");
+            window.location.href = "/user/dashboard";
         }
         else{
             alert("Login Failed");

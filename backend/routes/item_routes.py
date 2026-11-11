@@ -83,3 +83,11 @@ def report_found_item(
     return True
 
 
+@router.get("/report_form")
+def get_report_form(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ReportForm.html",
+        context={}
+    )
