@@ -3,14 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Campus Lost and Found Portal</title>
     <link rel="stylesheet" href="../css/ReportForm.css">
 </head>
 <body>
-    <!-- Report Item: -->
-    <button id="btnReportItem" class="btn-report-main">Report Item</button>
-    <!-- Container for dynamic form injection -->
-    <div id="modal-container"></div>
-    <script src="../js/ReportForm.js"></script>
+    <nav class="navbar">
+        <div class="nav-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10" cy="10" r="7" stroke-width="2.5"></circle>
+            <line x1="15" y1="15" x2="22" y2="22" stroke-width="3.2"></line>
+            <path d="M9 5.5 A 4.5 4.5 0 0 1 14.5 11" stroke-width="1.5"></path>
+            </svg>
+            Campus Find
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a href="#">Lost Items</a></li>
+            <li><a href="#">Found Items</a></li>
+            <li><button id="adminBtn" class="nav-btn admin-btn hidden">Admin Panel</button></li>
+            <li><button id="profileBtn" class="nav-btn profile-btn">Subhamkar</button></li>
+            <li><a href="#" class="signout-link">Sign Out</a></li>
+        </ul>
+    </nav>
+    <main class="main-content">
+        <!-- Pretty Welcome Banner -->
+        <div class="welcome-banner">
+            <h1>Welcome to Campus Find, Subhamkar! 👋</h1>
+            <p>IIT Bhilai's official portal to report and recover your items securely.</p>
+            <button id="btnReportItem" class="btn-report-main">Report Item</button>
+            <div id="modal-container"></div>
+            <script src="../js/ReportForm.js"></script>
+        </div>
+    </main>
+    
+    
 </body>
 </html>
