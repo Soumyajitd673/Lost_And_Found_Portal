@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -30,4 +30,15 @@ def create_report(db: Session, data: Report_Schema, reporter_id: int, ):
 
 def get_all_reports(db: Session):
     return db.scalars(select(Report)).all()
+
+def get_reports_count(db: Session):
+
+    query = select(Report.status, func.count(Report.id).label('count')).group_by(Report.status)
+
+    result = {}
+
+    for status, count in db.execute(query).all():
+        result[status] = count
+
+    return result
 
