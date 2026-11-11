@@ -11,7 +11,8 @@ let confirmPass = document.querySelector("#confirmPass");
 
 let registerForm = document.querySelector("#registerForm");
 
-registerForm.addEventListener("submit", function(event) {
+registerForm.addEventListener("submit", function (event) {
+    
     event.preventDefault();
 
     if (inputName.value.trim().length === 0) {
@@ -53,36 +54,28 @@ registerForm.addEventListener("submit", function(event) {
         return;
     }
 
-    
-   const userData = {
-    name: inputName.value.trim(),
-    email: inputEmail.value.trim(),
-    password: inputPass.value
-};
 
-fetch("/user/register", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(userData)
+    fetch("/user/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                throw new Error(error.detail || "Registration failed");
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert("Registration successful!");
+        window.location.href = "/user/dashboard";
+    })
+    .catch(error => {
+        alert(error.message);
+        console.error(error);
+    });
 })
-.then(response => {
-    if (!response.ok) {
-        return response.json().then(error => {
-            throw new Error(error.detail || "Registration failed");
-        });
-    }
-
-    return response.json();
-})
-.then(data => {
-    alert("Registration successful!");
-    window.location.href = "/user/dashboard";
-})
-.catch(error => {
-    alert(error.message);
-    console.error(error);
-});
-    
-});
