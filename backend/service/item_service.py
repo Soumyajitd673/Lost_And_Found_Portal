@@ -26,7 +26,7 @@ def register_item(
         report=report,
         title=data.title,
         description=data.description,
-        category=get_category_id(db, data.category),
+        category_id=get_category_id(db, data.category),
         status="Active",
         location=data.location,
         image_url=image_path,

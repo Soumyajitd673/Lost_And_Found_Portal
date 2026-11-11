@@ -29,7 +29,7 @@ def report_lost_item(
     item_data: str = Form(...),
     image: UploadFile = File(...),
     db: Session = Depends(get_db),
-    user_id: int = 1
+    user_id: int = Depends(get_current_user)
 ):
 
     image_path = None

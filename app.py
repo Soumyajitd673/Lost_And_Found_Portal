@@ -15,8 +15,10 @@ from backend.models.item import Item
 from backend.models.category import Category
 from backend.models import user, item, category
 
-
+load_dotenv()
 app = FastAPI()
+
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,16 +30,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
-Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
 
-load_dotenv()
+
 app.add_middleware(
     SessionMiddleware,
     secret_key=os.getenv("SESSION_KEY"),
     max_age=3600
 )
+Base.metadata.create_all(bind=engine)
 
 
 app.mount("/css", StaticFiles(directory="frontend/css"), name="css")
