@@ -43,11 +43,11 @@ def create_report(
     ):
 
     try:
-        data = Report_Schema.model_validate_json(report_schema)
-        report = report_service.create_report(db, data, user_id)
+        report = report_service.create_report(db, report_schema, user_id)
+        print(2)
 
         return True
     
     except ValueError as e:
-        raise HTTPException(detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
         
