@@ -54,6 +54,12 @@ registerForm.addEventListener("submit", function (event) {
         return;
     }
 
+    const userData = {
+        name: inputName.value.trim(),
+        email: inputEmail.value.trim(),
+        password: inputPass.value.trim()
+    };
+
 
     fetch("/user/register", {
         method: "POST",
