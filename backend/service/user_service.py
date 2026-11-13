@@ -61,8 +61,13 @@ def is_admin(db: Session, user_id: int):
     return user.role == "admin"
 
 
-def get_user_name(user_id: int, db: Session):
+def get_user_details(user_id: int, db: Session):
 
     user = get_user_by_id(db, user_id)
 
-    return user.name
+    details = {
+        "user_name": user.name,
+        "email": user.email
+    }
+
+    return details

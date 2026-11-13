@@ -26,7 +26,7 @@ def register_item(
         report=report,
         title=data.title,
         description=data.description,
-        category=get_category_id(db, data.category),
+        category_id=get_category_id(db, data.category),
         status="Active",
         location=data.location,
         image_url=image_path,
@@ -57,3 +57,7 @@ def get_items_by_category(db: Session, category: str, report_type: str):
 def get_items_count(db: Session, report_type: str):
 
     return db.scalar(select(func.count()).select_from(Item).where(Item.report == report_type))
+
+def get_user_reported_items(db: Session, user_id: int):
+
+    return db.scalars(select(Item).where(Item.reported_by == user_id)).all()
