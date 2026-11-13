@@ -17,18 +17,18 @@
             Campus Find
         </div>
         <ul class="nav-links">
-            <li><a href="#" class="active">Dashboard</a></li>
-            <li><a href="#">Lost Items</a></li>
-            <li><a href="#">Found Items</a></li>
+            <li><a href="/user/dashboard" class="active">Dashboard</a></li>
+            <li><a href="/item/lost">Lost Items</a></li>
+            <li><a href="/item/found">Found Items</a></li>
             <li><button id="adminBtn" class="nav-btn admin-btn hidden">Admin Panel</button></li>
-            <li><button id="profileBtn" class="nav-btn profile-btn">Subhamkar</button></li>
-            <li><a href="#" class="signout-link">Sign Out</a></li>
+            <li><button id="profileBtn" class="nav-btn profile-btn">{{ user_name }}</button></li>
+            <li><a href="/user/logout" class="signout-link">Sign Out</a></li>
         </ul>
     </nav>
     <main class="main-content">
         <!-- Pretty Welcome Banner -->
         <div class="welcome-banner">
-            <h1>Welcome to Campus Find, Subhamkar! 👋</h1>
+            <h1>Welcome to Campus Find, {{ user_name }}! 👋</h1>
             <p>IIT Bhilai's official portal to report and recover your items securely.</p>
             <button id="btnReportItem" class="btn-report-main">Report Item</button>
             <div id="modal-container"></div>
