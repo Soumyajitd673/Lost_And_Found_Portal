@@ -2,12 +2,11 @@ from fastapi import APIRouter, Request, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from backend.schema.Login_Register_Info_Schema import Login_Info, Register_Info
-import backend.service.user_service as user_service
+from backend.service import user_service, otp_service, item_service
 from backend.templates import templates
 from backend.database.db import get_db
 from backend.curr_user import get_current_user
 
-from backend.service import otp_service
 
 router = APIRouter(prefix="/user", tags=["user"])
 
@@ -68,12 +67,12 @@ def register(
 
     return True
 
-@router.post("/logout")
+@router.get("/logout")
 def logout(request: Request):
 
     request.session.clear()
 
-    return True
+    return get_login_page(request)
 
 
 @router.get("/dashboard")
@@ -83,10 +82,24 @@ def get_user_dashboard(
     user_id: int = Depends(get_current_user)
     ):
 
-    user_name = user_service.get_user_name(user_id, db)
+    user_name = user_service.get_user_details(user_id, db).get("user_name")
 
     return templates.TemplateResponse(
         request=request,
         name="Dashboard.html",
         context={"user_name": user_name}
     )
+
+@router.get("/profile")
+def get_user_profile(
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+    ):
+
+    user_details = user_service.get_user_details(user_id, db)
+    reported_items = item_service.get_user_reported_items(db, user_id)
+
+    
+
+

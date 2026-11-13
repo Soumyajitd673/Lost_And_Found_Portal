@@ -9,10 +9,12 @@ from backend.templates import templates
 
 router = APIRouter(prefix="/report", tags=["report"])
 
-@router.get()
-def get_reports_page(request: Request, db: Session = Depends(get_db)):
-
-    user_id = Session.get("user_id")
+@router.get("")
+def get_reports_page(
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+    ):
 
     if user_service.is_admin(db, user_id):
 
@@ -33,7 +35,7 @@ def get_reports_page(request: Request, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Only Admin Access.")
 
 
-@router.post()
+@router.post("")
 def create_report(
     report_schema: Report_Schema,
     user_id: int = Depends(get_current_user),

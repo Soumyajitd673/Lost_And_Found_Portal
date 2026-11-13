@@ -6,6 +6,8 @@ from backend.database.db import Base
 
 class Report(Base):
 
+    __tablename__ = "reports"
+
     id = Column(Integer, primary_key=True, index=True)
 
     reporter_id = Column(Integer, ForeignKey("users.id"), nullable=False)
