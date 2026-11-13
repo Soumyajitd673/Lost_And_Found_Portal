@@ -59,9 +59,6 @@ function setupModalEvents() {
         locationWrapper.style.width = "100%";
         labelLocation.innerHTML = 'Last Known Location <span class="required">*</span>';
         
-        currentLocationGrp.classList.add('hidden');
-        currentLocationInput.removeAttribute('required');
-        
         submitBtn.classList.remove('found-btn');
     }
 
@@ -72,10 +69,7 @@ function setupModalEvents() {
         labelDate.innerHTML = 'Date Found <span class="required">*</span>';
         
         locationWrapper.style.width = "auto";
-        labelLocation.innerHTML = 'Where did you find it? <span class="required">*</span>';
-        
-        currentLocationGrp.classList.remove('hidden');
-        currentLocationInput.setAttribute('required', 'true');
+        labelLocation.innerHTML = 'Item currently kept at? <span class="required">*</span>';
         
         submitBtn.classList.add('found-btn');
     }
@@ -86,12 +80,11 @@ function setupModalEvents() {
         const type = document.querySelector('input[name="reportType"]:checked').value;
         const itemDataObject = {
             title: document.getElementById('itemName').value, 
-            description: document.getElementById('itemDescription') ? document.getElementById('itemDescription').value : null,
-            category: document.getElementById('itemCategory') ? document.getElementById('itemCategory').value : "Other",
-            location: type === 'lost' 
-                ? (document.getElementById('itemLocation') ? document.getElementById('itemLocation').value : "Unknown")
-                : (document.getElementById('currentLocation') ? document.getElementById('currentLocation').value : "Unknown")
+            description: document.getElementById('description').value || null,
+            category: document.getElementById('category').value,
+            location: document.getElementById('location').value
         };
+
         const formData = new FormData();
         formData.append('item_data', JSON.stringify(itemDataObject));
         
