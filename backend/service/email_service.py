@@ -1,33 +1,53 @@
+import base64
 import os
-import smtplib
 from email.message import EmailMessage
+from pathlib import Path
 
 from dotenv import load_dotenv
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
 
 load_dotenv()
 
+SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _get_gmail_credentials():
+    token_file = Path(os.getenv("GMAIL_TOKEN_FILE", str(PROJECT_ROOT / "gmail_token.json")))
+    if not token_file.is_absolute():
+        token_file = PROJECT_ROOT / token_file
+
+    if not token_file.is_file():
+        raise RuntimeError(
+            "Gmail OAuth token is missing. Run "
+            "python -m backend.service.gmail_oauth_setup first."
+        )
+
+    credentials = Credentials.from_authorized_user_file(str(token_file), SCOPES)
+    if credentials.expired and credentials.refresh_token:
+        credentials.refresh(Request())
+        token_file.write_text(credentials.to_json(), encoding="utf-8")
+
+    if not credentials.valid:
+        raise RuntimeError(
+            "Gmail OAuth credentials are invalid. Re-run "
+            "python -m backend.service.gmail_oauth_setup."
+        )
+
+    return credentials
+
 
 def send_otp_email(email, otp):
-    smtp_host = os.getenv("SMTP_HOST")
-    smtp_port = os.getenv("SMTP_PORT")
-    smtp_username = os.getenv("SMTP_USERNAME")
-    smtp_password = os.getenv("SMTP_PASSWORD")
-    sender_email = os.getenv("SMTP_FROM_EMAIL")
-
-    if not smtp_host or not smtp_port or not smtp_username or not smtp_password or not sender_email:
-        print("Email settings are missing. This is a development environment and the otp will be printed to the console.")
-        print("Email:", email)
-        print("OTP:", otp)
-        print("This is valid for 5 minutes.")
-        return
-
     message = EmailMessage()
-    message["Subject"] = "Your registration OTP"
-    message["From"] = sender_email
+    message["Subject"] = "Your registration OTP for Campus Find"
     message["To"] = email
     message.set_content("Your OTP is " + otp + ". It expires in 5 minutes.")
 
-    with smtplib.SMTP(smtp_host, int(smtp_port)) as server:
-        server.starttls()
-        server.login(smtp_username, smtp_password)
-        server.send_message(message)
+    encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode("ascii")
+    gmail = build("gmail", "v1", credentials=_get_gmail_credentials(), cache_discovery=False)
+    gmail.users().messages().send(
+        userId="me",
+        body={"raw": encoded_message}
+    ).execute()
