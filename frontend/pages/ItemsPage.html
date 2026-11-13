@@ -4,9 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page_title }} | Khoj Portal</title>
+    <link rel="stylesheet" href="../css/ReportForm.css">
     <link rel="stylesheet" href="../css/ItemsPage.css">
 </head>
 <body>
+    <nav class="navbar">
+        <div class="nav-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10" cy="10" r="7" stroke-width="2.5"></circle>
+                <line x1="15" y1="15" x2="22" y2="22" stroke-width="3.2"></line>
+                <path d="M9 5.5 A 4.5 4.5 0 0 1 14.5 11" stroke-width="1.5"></path>
+            </svg>
+            Campus Find
+        </div>
+        <ul class="nav-links">
+            <li><a href="/user/dashboard">Dashboard</a></li>
+            <li>
+                <a href="/item/lost" {% if page_title == "Reported Lost Items" %}class="active"{% endif %}>
+                    Lost Items
+                </a>
+            </li>
+            <li>
+                <a href="/item/found" {% if page_title == "Reported Found Items" %}class="active"{% endif %}>
+                    Found Items
+                </a>
+            </li>
+            <li><button id="adminBtn" class="nav-btn admin-btn hidden">Admin Panel</button></li>
+            <li><button id="profileBtn" class="nav-btn profile-btn">{{ user_name }}</button></li>
+            <li><a href="/user/logout" class="signout-link">Sign Out</a></li>
+        </ul>
+    </nav>
+    <main class="items-content">
     <h1>{{ page_title }}</h1>
 
     {% if items %}
@@ -70,6 +98,7 @@
     <p>No items reported yet.</p>
 
     {% endif %}
+    </main>
 
     <script src="../js/Report_Admin.js" ></script>
 
