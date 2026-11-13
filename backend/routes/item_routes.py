@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from backend.schema.Item_Schema import Item_Schema
 from backend.database.db import get_db
-from backend.service import file_service, item_service
+from backend.service import file_service, item_service, user_service
 from backend.curr_user import get_current_user
 from backend.templates import templates
 
@@ -13,14 +13,19 @@ router = APIRouter(prefix="/item", tags=["item"])
 
 
 @router.get("/lost")
-def get_lost_items(request: Request, db: Session = Depends(get_db)):
+def get_lost_items(
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
 
     lost_items = item_service.get_items(db, "Lost")
+    user_name = user_service.get_user_details(user_id, db).get("user_name")
 
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": lost_items, "page_title": "Reported Lost Items"}
+        context={"items": lost_items, "page_title": "Reported Lost Items", "user_name": user_name}
     )
 
 
@@ -49,14 +54,19 @@ def report_lost_item(
     
 
 @router.get("/found")
-def get_found_items(request: Request, db: Session = Depends(get_db)):
+def get_found_items(
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
 
     found_items = item_service.get_items(db, "Found")
+    user_name = user_service.get_user_details(user_id, db).get("user_name")
 
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": found_items, "page_title": "Reported Found Items"}
+        context={"items": found_items, "page_title": "Reported Found Items", "user_name": user_name}
     )
 
 
