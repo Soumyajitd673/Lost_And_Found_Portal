@@ -4,14 +4,15 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from backend.schema.Report_Schema import Report_Schema
 from backend.models.report import Report
-
+from backend.service import user_service
 
 def create_report(db: Session, data: Report_Schema, reporter_id: int, ):
 
+    reported_user_id = user_service.get_user_by_email(db, data.reported_user_email).id
 
     report = Report(
         reporter_id=reporter_id,
-        reported_user_id=data.reported_user_id,
+        reported_user_id=reported_user_id,
         report_description=data.report_description
     )
 

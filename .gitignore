@@ -1,5 +1,7 @@
 .env
 /venv
 __pycache__/
+*.pyc
 /backend/uploads
-/gmail_token.json
+credentials.json
+gmail_token.json
