@@ -60,4 +60,25 @@ def get_items_count(db: Session, report_type: str):
 
 def get_user_reported_items(db: Session, user_id: int):
 
-    return db.scalars(select(Item).where(Item.reported_by == user_id)).all()
+    items = db.scalars(select(Item).where(Item.reported_by == user_id)).all()
+
+    result = {
+        "lostItems": [],
+        "foundItems": []
+    }
+
+    for item in items:
+
+        data = {
+            "item_id": item.id,
+            "item_name": item.title,
+            "date_reported": item.created_at,
+            "status": item.status
+        }
+
+        if item.report == "Lost":
+            result["lostItems"].append(data)
+        else:
+            result["foundItems"].append(data)
+
+    return result
