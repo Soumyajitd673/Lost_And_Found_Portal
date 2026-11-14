@@ -24,7 +24,7 @@ class Item(Base):
 
     image_url = Column(String(255), nullable=False)
 
-    reported_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    reported_by = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
 
     created_at = Column(DateTime, server_default=func.now())
 

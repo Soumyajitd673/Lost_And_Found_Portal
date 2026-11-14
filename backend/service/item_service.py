@@ -46,6 +46,10 @@ def register_item(
     return item
 
 
+def get_item_by_id(db: Session, item_id: int):
+
+    return db.scalar(select(Item).where(Item.id == item_id))
+
 def get_items(db: Session, report_type: str):
 
     return db.scalars(select(Item).where(Item.report == report_type)).all()
@@ -82,3 +86,31 @@ def get_user_reported_items(db: Session, user_id: int):
             result["foundItems"].append(data)
 
     return result
+
+def mark_as_returned(db: Session, item_id: int, user_id: int):
+
+    item = get_item_by_id(db, item_id)
+
+    if not item or item.reported_by != user_id:
+        raise ValueError()
+
+    item.status = "Returned"
+
+    db.commit()
+    db.refresh(item)
+
+    return item
+
+
+def delete_item(db: Session, item_id: int, user_id: int):
+
+    item = get_item_by_id(db, item_id)
+    
+    if not item or item.reported_by != user_id:
+        raise ValueError()
+
+    db.delete(item)
+    db.commit()
+
+    return item
+    

@@ -2,9 +2,22 @@ import bcrypt
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+import re
 
 from backend.models.user import User
 from backend.schema.Login_Register_Info_Schema import Register_Info, Login_Info
+from backend.service import email_service
+
+
+
+def validate_email(email: str) -> bool:
+    email_regex = r'^[a-zA-Z0-9._%+-]+@iitbhilai\.ac\.in$'
+    return bool(re.match(email_regex, email))
+
+
+def validate_password(password: str) -> bool:
+    password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+    return bool(re.match(password_regex, password))
 
 def hash_password(password: str):
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
@@ -13,6 +26,9 @@ def verify_password(password: str, password_hash: str):
     return bcrypt.checkpw(password.encode("utf-8"), password_hash.encode("utf-8"))
 
 def create_user(db: Session, data: Register_Info):
+
+    if not validate_email(data.email) or not validate_password(data.password):
+        raise ValueError("Bad email or password.")
 
     if get_user_by_email(db, data.email):
         raise ValueError("Email already registered.")
