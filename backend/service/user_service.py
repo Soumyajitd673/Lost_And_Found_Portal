@@ -1,10 +1,12 @@
 import bcrypt
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 import re
 
 from backend.models.user import User
+from backend.models.item import Item
+from backend.models.report import Report
 from backend.schema.Login_Register_Info_Schema import Register_Info, Login_Info
 from backend.service import email_service
 
@@ -93,8 +95,17 @@ def delete_user(db: Session, user_id: int, input_password: str):
 
     user = get_user_by_id(db, user_id)
 
+    if user is None:
+        raise ValueError("User not found")
+
     if not verify_password(input_password, user.password_hash):
         raise ValueError("Incorrect Password")
+    db.execute(
+        delete(Report).where(
+            (Report.reporter_id == user_id) | (Report.reported_user_id == user_id)
+        )
+    )
+    db.execute(delete(Item).where(Item.reported_by == user_id))
 
     try:
         db.delete(user)

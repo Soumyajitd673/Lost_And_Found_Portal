@@ -122,14 +122,11 @@ def delete_account(
     request: Request,
     delete_request: DeleteAccountRequest,
     db: Session = Depends(get_db),
-    user_id: Session = Depends(get_current_user)
+    user_id: int = Depends(get_current_user)
 ):
-    
     try:
         user_service.delete_user(db, user_id, delete_request.password)
-        logout(request)
+        request.session.clear()
+        return {"message": "Account deleted successfully"}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
-    
-
-
