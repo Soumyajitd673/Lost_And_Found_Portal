@@ -407,3 +407,36 @@ a:focus-visible {
         gap: 0.4rem;
     }
 }
+
+.btn-returned {
+    background-color: #dcfce7;
+    color: #15803d;
+    border: 1px solid #86efac;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-returned:hover:not(:disabled) {
+    background-color: #bbf7d0;
+}
+
+.btn-returned:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.btn-delete-item {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-delete-item:hover {
+    background-color: #fecaca;
+}

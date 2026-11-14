@@ -10,6 +10,9 @@ def create_report(db: Session, data: Report_Schema, reporter_id: int, ):
 
     reported_user_id = user_service.get_user_by_email(db, data.reported_user_email).id
 
+    if (reported_user_id == reporter_id):
+        raise ValueError("Cannot report yourself.")
+
     report = Report(
         reporter_id=reporter_id,
         reported_user_id=reported_user_id,
@@ -29,8 +32,8 @@ def create_report(db: Session, data: Report_Schema, reporter_id: int, ):
     return report
 
 
-def get_all_reports(db: Session):
-    return db.scalars(select(Report)).all()
+def get_all_pending_reports(db: Session):
+    return db.scalars(select(Report).where(Report.status == "Pending")).all()
 
 def get_reports_count(db: Session):
 
