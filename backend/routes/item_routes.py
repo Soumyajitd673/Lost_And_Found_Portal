@@ -134,3 +134,4 @@ def get_lost_item_by_category(
         name="ItemsPage.html",
         context={"items": category_items, "page_title": f"Reported Found Items \nCategory: {category_name}"}
     )
+

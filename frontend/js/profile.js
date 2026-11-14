@@ -69,8 +69,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const date = document.createElement('span');
             date.className = 'item-date';
             date.textContent = formatDate(item.date_reported);
+
+            const isReturned = String(item.status).toLowerCase() === 'returned';
+
+            const returnedBtn = document.createElement('button');
+            returnedBtn.className = 'btn-returned';
+            returnedBtn.dataset.action = 'returned';
+            returnedBtn.textContent = isReturned ? 'Returned ✓' : 'Mark Returned';
+            returnedBtn.disabled = isReturned;
+
+            const deleteItemBtn = document.createElement('button');
+            deleteItemBtn.className = 'btn-delete-item';
+            deleteItemBtn.dataset.action = 'delete';
+            deleteItemBtn.textContent = 'Delete';
+
  
-            li.append(title, date);
+            li.append(title, date, returnedBtn, deleteItemBtn);
             listEl.appendChild(li);
         });
     }
@@ -80,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const foundList = document.querySelector('#foundHistory .item-list');
  
         try {
-            const response = await fetch('/api/user/history');
+            const response = await fetch('/user/history');
             if (!response.ok) {
                 throw new Error(`Server responded with status ${response.status}`);
             }
@@ -155,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             confirmDeleteBtn.textContent = 'Deleting...';
  
             try {
-                const res = await fetch('/api/user/delete', {
+                const res = await fetch('/user/delete', {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ password: enteredPassword })

@@ -21,7 +21,7 @@
             <li><a href="/item/lost">Lost Items</a></li>
             <li><a href="/item/found">Found Items</a></li>
             <li><button id="adminBtn" class="nav-btn admin-btn hidden">Admin Panel</button></li>
-            <li><button id="profileBtn" class="nav-btn profile-btn active">{{ user_name }}</button></li>
+            <li><a href="/user/profile"><button class="nav-btn profile-btn">{{ user_name }}</button></a></li>
             <li><a href="/user/logout" class="signout-link">Sign Out</a></li>
         </ul>
     </nav>
@@ -44,24 +44,11 @@
 
             <div id="lostHistory" class="tab-content active">
                 <ul class="item-list">
-                    <li>
-                        <span class="item-title">Engineering Drawing Kit</span>
-                        <span class="item-date">Nov 12, 2026</span>
-                    </li>
-                    <li>
-                        <span class="item-title">Black Wallet</span>
-                        <span class="item-date">Nov 05, 2026</span>
-                    </li>
                 </ul>
             </div>
 
-            <!-- Found Items Tab -->
             <div id="foundHistory" class="tab-content">
                 <ul class="item-list">
-                    <li>
-                        <span class="item-title">Scientific Calculator</span>
-                        <span class="item-date">Nov 10, 2026</span>
-                    </li>
                 </ul>
             </div>
         </div>
