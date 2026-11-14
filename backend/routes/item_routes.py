@@ -3,6 +3,7 @@ from typing import Optional
 from sqlalchemy.orm import Session
 
 from backend.schema.Item_Schema import Item_Schema
+from backend.schema.Item_ID import Item_ID
 from backend.database.db import get_db
 from backend.service import file_service, item_service, user_service
 from backend.curr_user import get_current_user
@@ -135,3 +136,30 @@ def get_lost_item_by_category(
         context={"items": category_items, "page_title": f"Reported Found Items \nCategory: {category_name}"}
     )
 
+
+@router.post("/returned")
+def item_returned(
+    item_id: Item_ID,
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
+    
+    try:
+        item = item_service.mark_as_returned(db, item_id.id, user_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.post("/delete")
+def item_returned(
+    item_id: Item_ID,
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
+    
+    try:
+        item = item_service.delete_item(db, item_id.id, user_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
