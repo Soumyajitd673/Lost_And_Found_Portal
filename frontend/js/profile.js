@@ -61,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
  
         items.forEach(item => {
             const li = document.createElement('li');
+
+            li.dataset.id = item.item_id;
  
             const title = document.createElement('span');
             title.className = 'item-title';
@@ -205,4 +207,33 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.target === deleteModal) closeModal();
     });
  
+});
+
+document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+
+    const id = btn.closest('li').dataset.id;
+    const action = btn.dataset.action;
+
+    const res = await fetch(`/item/${action}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: Number(id) })
+    });
+
+    if (!res.ok) {
+        const error = await res.json();
+        console.log("Status:", res.status);
+        console.log("Error:", error);
+        alert(JSON.stringify(error.detail));
+        return;
+    }
+
+    if (action === 'returned') {
+        btn.textContent = 'Returned ✓';
+        btn.disabled = true;
+    } else {
+        btn.closest('li').remove();
+    }
 });

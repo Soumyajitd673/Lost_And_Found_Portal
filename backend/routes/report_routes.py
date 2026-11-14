@@ -18,14 +18,14 @@ def get_reports_page(
 
     if user_service.is_admin(db, user_id):
 
-        reports = report_service.get_all_reports(db)
+        pending_reports = report_service.get_all_pending_reports(db)
         report_count = report_service.get_reports_count(db)
 
         return templates.TemplateResponse(
             request=request,
             name="admin_dashboard.html",
             context={
-                'reports': reports,
+                'pending_reports': pending_reports,
                 'pending': report_count.get('pending', 0),
                 'resolve': report_count.get('resolved', 0)
             }
@@ -44,10 +44,9 @@ def create_report(
 
     try:
         report = report_service.create_report(db, report_schema, user_id)
-        print(2)
 
         return True
-    
+     
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
         

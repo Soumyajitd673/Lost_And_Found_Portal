@@ -54,7 +54,6 @@ def register(
     db: Session = Depends(get_db)
 ):
 
-    # Check if the email is verified
     if not otp_service.is_email_verified(register_info.email):
         raise HTTPException(status_code=400, detail="Verify your email before registering.")
 
