@@ -91,3 +91,37 @@ def get_report_form(request: Request):
         name="ReportForm.html",
         context={}
     )
+
+
+@router.get("/lost/{category_name}")
+def get_lost_item_by_category(
+    request: Request,
+    category_name: str,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+    ):
+
+    category_items = item_service.get_items_by_category(db, category_name, "Lost")
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ItemsPage.html",
+        context={"items": category_items, "page_title": f"Reported Lost Items \nCategory: {category_name}"}
+    )
+
+
+@router.get("/found/{category_name}")
+def get_lost_item_by_category(
+    request: Request,
+    category_name: str,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+    ):
+
+    category_items = item_service.get_items_by_category(db, category_name, "Found")
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ItemsPage.html",
+        context={"items": category_items, "page_title": f"Reported Found Items \nCategory: {category_name}"}
+    )

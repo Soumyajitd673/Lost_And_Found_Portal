@@ -7,6 +7,25 @@
     <link rel="stylesheet" href="../css/ItemsPage.css">
 </head>
 <body>
+     <h1 id="categoryHeading">
+        Search by category
+        <select name="Category" id="category">
+             <option value="" disabled selected>Select Category</option>
+                <option value="Electronics & Gadgets">Electronics & Gadgets</option>
+                <option value="Documents & IDs">Documents & IDs</option>
+                <option value="Wallets, money and cards">Wallets, money and cards</option>
+                <option value="Bags and carriers">Bags and carriers</option>
+                <option value="Keys and access items">Keys and access items</option>
+                <option value="Clothing & Footwear">Clothing & Footwear</option>
+                <option value="Academic & Lab Items">Academic & Lab Items</option>
+                <option value="Accessories and jewelleries">Accessories and jewelleries</option>
+                <option value="Sports and fitness gear">Sports and fitness gear</option>
+                <option value="Vehicles and vehicle accessories">Vehicles and vehicle accessories</option>
+                <option value="Personal Care & Health items">Personal Care & Health items</option>
+                <option value="Food, drink and utensils">Food, drink and utensils</option>
+                <option value="Others">Others</option>
+        </select>
+    </h1>
     <h1>{{ page_title }}</h1>
 
     {% if items %}
@@ -45,7 +64,20 @@
                 <td>
                     {{ item.reporter.name }}<br>
                     {{ item.reporter.email }}<br>
-                    <button type="button" class="btn-report">Report to Admin</button>
+                    
+                    <!-- Added data-reporter-email attribute -->
+                    <button type="button" class="btn-report report_to_admin_btn" 
+                            data-item-id="{{ item.id }}" 
+                            data-reporter-email="{{ item.reporter.email }}">
+                        Report to Admin
+                    </button>
+
+                    <!-- Hidden form container -->
+                    <div class="report_form_container" style="display: none; margin-top: 10px;">
+                        <textarea class="report_description" placeholder="Enter report details..." rows="3" cols="30"></textarea><br>
+                        <button type="button" class="submit_report_btn">Submit</button>
+                        <button type="button" class="cancel_report_btn">Cancel</button>
+                    </div>
                 </td>
             </tr>
             {% endfor %}
@@ -57,6 +89,8 @@
     <p>No items reported yet.</p>
 
     {% endif %}
+
+    <script src="../js/ItemsPage.js"></script>
 
 </body>
 </html>
