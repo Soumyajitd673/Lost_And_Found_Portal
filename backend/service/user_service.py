@@ -67,7 +67,22 @@ def get_user_details(user_id: int, db: Session):
 
     details = {
         "user_name": user.name,
-        "email": user.email
+        "user_email": user.email,
+        "user_role": user.role
     }
 
     return details
+
+def delete_user(db: Session, user_id: int, input_password: str):
+
+    user = get_user_by_id(db, user_id)
+
+    if not verify_password(input_password, user.password_hash):
+        raise ValueError("Incorrect Password")
+
+    try:
+        db.delete(user)
+        db.commit()
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise ValueError(str(e))
