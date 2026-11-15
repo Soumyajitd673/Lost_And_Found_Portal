@@ -131,8 +131,8 @@ body {
 }
 
 .student-role {
-    background-color: #eff6ff; 
-    color: #2563eb; 
+    background-color: #eff6ff;
+    color: #2563eb;
     border: 1px solid #bfdbfe;
 }
 
@@ -218,7 +218,7 @@ body {
 .item-list li {
     display: flex;
     justify-content: space-between;
-    background-color: #f8fafc; 
+    background-color: #f8fafc;
     padding: 1.2rem 1.5rem;
     margin-bottom: 1rem;
     border-radius: 8px;
@@ -235,8 +235,8 @@ body {
     background-color: #ffffff;
 }
 
-#lostHistory .item-list li { border-left-color: #ef4444; } 
-#foundHistory .item-list li { border-left-color: #10b981; } 
+#lostHistory .item-list li { border-left-color: #ef4444; }
+#foundHistory .item-list li { border-left-color: #10b981; }
 
 .item-title {
     font-weight: 600;
