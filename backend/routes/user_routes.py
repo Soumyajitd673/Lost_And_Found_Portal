@@ -27,7 +27,9 @@ def login(
         request: Request,
         db: Session = Depends(get_db)
     ):
-    
+
+    login_info.email = login_info.email.lower()
+
     user = user_service.authenticate_user(db, login_info)
     
     if not user:
@@ -53,6 +55,8 @@ def register(
     request: Request,
     db: Session = Depends(get_db)
 ):
+
+    register_info.email = register_info.email.lower()
 
     if not otp_service.is_email_verified(register_info.email):
         raise HTTPException(status_code=400, detail="Verify your email before registering.")
