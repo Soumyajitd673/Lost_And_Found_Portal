@@ -37,24 +37,6 @@
         </ul>
     </nav>
     <main class="items-content">
-    <label class="category-filter" for="category">Search by category
-        <select name="category" id="category">
-            <option value="" {% if not category_name %}selected{% endif %}>All categories</option>
-            <option value="Electronics & Gadgets" {% if category_name == "Electronics & Gadgets" %}selected{% endif %}>Electronics & Gadgets</option>
-            <option value="Documents & IDs" {% if category_name == "Documents & IDs" %}selected{% endif %}>Documents & IDs</option>
-            <option value="Wallets, money and cards" {% if category_name == "Wallets, money and cards" %}selected{% endif %}>Wallets, money and cards</option>
-            <option value="Bags and carriers" {% if category_name == "Bags and carriers" %}selected{% endif %}>Bags and carriers</option>
-            <option value="Keys and access items" {% if category_name == "Keys and access items" %}selected{% endif %}>Keys and access items</option>
-            <option value="Clothing & Footwear" {% if category_name == "Clothing & Footwear" %}selected{% endif %}>Clothing & Footwear</option>
-            <option value="Academic & Lab Items" {% if category_name == "Academic & Lab Items" %}selected{% endif %}>Academic & Lab Items</option>
-            <option value="Accessories and jewelleries" {% if category_name == "Accessories and jewelleries" %}selected{% endif %}>Accessories and jewelleries</option>
-            <option value="Sports and fitness gear" {% if category_name == "Sports and fitness gear" %}selected{% endif %}>Sports and fitness gear</option>
-            <option value="Vehicles and vehicle accessories" {% if category_name == "Vehicles and vehicle accessories" %}selected{% endif %}>Vehicles and vehicle accessories</option>
-            <option value="Personal Care & Health items" {% if category_name == "Personal Care & Health items" %}selected{% endif %}>Personal Care & Health items</option>
-            <option value="Food, drink and utensils" {% if category_name == "Food, drink and utensils" %}selected{% endif %}>Food, drink and utensils</option>
-            <option value="Others" {% if category_name == "Others" %}selected{% endif %}>Others</option>
-        </select>
-    </label>
     <h1>{{ page_title }}</h1>
 
     {% if items %}
