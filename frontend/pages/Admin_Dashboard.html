@@ -9,7 +9,13 @@
 <body>
 
 <div class="container">
-    
+    <aside class="sidebar">
+        <h2>Campus Find</h2>
+        <p>Administration</p>
+        <a class="active" href="/report">User reports</a>
+        <a href="/user/dashboard">Back to portal</a>
+        <a href="/user/logout">Sign out</a>
+    </aside>
 
     <main class="main">
         <header>
@@ -22,73 +28,52 @@
 
         <section class="stats">
             <div class="stat">
-                <h2>12</h2>
+                <h2>{{ total }}</h2>
                 <p>Total Reports</p>
             </div>
             <div class="stat">
-                <h2>05</h2>
+                <h2>{{ pending }}</h2>
                 <p>Pending</p> 
             </div>
             <div class="stat">
-                <h2>07</h2>
+                <h2>{{ resolve }}</h2>
                 <p>Resolved</p>
             </div>
         </section>
 
         <section class="reports">
             <h2>User Reports</h2>
-
+            {% for report in pending_reports %}
             <div class="report-card">
                 <div class="report-header">
-                    <h3>Report #001</h3>
-                    <span class="pending">Pending</span>
+                    <h3>Report #{{ report.id }}</h3>
+                    <span class="pending">{{ report.status }}</span>
                 </div>
 
                 <div class="users">
                     <div>
                         <small>REPORTED BY</small>
-                        <h4>Aarav Sharma</h4>
-                        <p>aarav@iitbhilai.ac.in</p>
+                        <h4>{{ report.reporter.name if report.reporter else "Deleted user" }}</h4>
+                        <p>{{ report.reporter.email if report.reporter else "" }}</p>
                     </div>
                     <div>
                         <small>REPORTED USER</small>
-                        <h4>Rahul Verma</h4>
-                        <p>rahul@iitbhilai.ac.in</p>
+                        <h4>{{ report.reported_user.name if report.reported_user else "Deleted user" }}</h4>
+                        <p>{{ report.reported_user.email if report.reported_user else "" }}</p>
                     </div>
                 </div>
 
                 <p class="description">
-                    Reported for inappropriate behaviour during an item exchange.
+                    {{ report.report_description }}
                 </p>
 
-                <button class="resolve">Resolve Issue</button>
+                <form action="/report/{{ report.id }}/resolve" method="post">
+                    <button class="resolve" type="submit">Mark as Resolved</button>
+                </form>
             </div>
-
-            <div class="report-card">
-                <div class="report-header">
-                    <h3>Report #002</h3>
-                    <span class="resolved">Resolved</span>
-                </div>
-
-                <div class="users">
-                    <div>
-                        <small>REPORTED BY</small>
-                        <h4>Priya Mehta</h4>
-                        <p>priya@iitbhilai.ac.in</p>
-                    </div>
-                    <div>
-                        <small>REPORTED USER</small>
-                        <h4>Aditya Kumar</h4>
-                        <p>aditya@iitbhilai.ac.in</p>
-                    </div>
-                </div>
-
-                <p class="description">
-                    Complaint regarding misleading information about a found item.
-                </p>
-
-                <button class="resolved-btn" disabled>Resolved</button>
-            </div>
+            {% else %}
+            <p class="description">There are no pending reports.</p>
+            {% endfor %}
         </section>
     </main>
 </div>

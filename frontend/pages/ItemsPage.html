@@ -4,28 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page_title }} | Khoj Portal</title>
+    <link rel="stylesheet" href="../css/ReportForm.css">
     <link rel="stylesheet" href="../css/ItemsPage.css">
 </head>
 <body>
-     <h1 id="categoryHeading">
-        Search by category
-        <select name="Category" id="category">
-             <option value="" disabled selected>Select Category</option>
-                <option value="Electronics & Gadgets">Electronics & Gadgets</option>
-                <option value="Documents & IDs">Documents & IDs</option>
-                <option value="Wallets, money and cards">Wallets, money and cards</option>
-                <option value="Bags and carriers">Bags and carriers</option>
-                <option value="Keys and access items">Keys and access items</option>
-                <option value="Clothing & Footwear">Clothing & Footwear</option>
-                <option value="Academic & Lab Items">Academic & Lab Items</option>
-                <option value="Accessories and jewelleries">Accessories and jewelleries</option>
-                <option value="Sports and fitness gear">Sports and fitness gear</option>
-                <option value="Vehicles and vehicle accessories">Vehicles and vehicle accessories</option>
-                <option value="Personal Care & Health items">Personal Care & Health items</option>
-                <option value="Food, drink and utensils">Food, drink and utensils</option>
-                <option value="Others">Others</option>
+    <nav class="navbar">
+        <div class="nav-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10" cy="10" r="7" stroke-width="2.5"></circle>
+                <line x1="15" y1="15" x2="22" y2="22" stroke-width="3.2"></line>
+                <path d="M9 5.5 A 4.5 4.5 0 0 1 14.5 11" stroke-width="1.5"></path>
+            </svg>
+            Campus Find
+        </div>
+        <ul class="nav-links">
+            <li><a href="/user/dashboard">Dashboard</a></li>
+            <li>
+                <a href="/item/lost" {% if page_title == "Reported Lost Items" %}class="active"{% endif %}>
+                    Lost Items
+                </a>
+            </li>
+            <li>
+                <a href="/item/found" {% if page_title == "Reported Found Items" %}class="active"{% endif %}>
+                    Found Items
+                </a>
+            </li>
+            {% if user_role == "admin" %}
+            <li><a href="/report" class="nav-btn admin-btn">Admin Panel</a></li>
+            {% endif %}
+            <li><a href="/user/profile"><button class="nav-btn profile-btn">{{ user_name }}</button></a></li>
+            <li><a href="/user/logout" class="signout-link">Sign Out</a></li>
+        </ul>
+    </nav>
+    <main class="items-content">
+    <label class="category-filter" for="category">Search by category
+        <select name="category" id="category">
+            <option value="" {% if not category_name %}selected{% endif %}>All categories</option>
+            <option value="Electronics & Gadgets" {% if category_name == "Electronics & Gadgets" %}selected{% endif %}>Electronics & Gadgets</option>
+            <option value="Documents & IDs" {% if category_name == "Documents & IDs" %}selected{% endif %}>Documents & IDs</option>
+            <option value="Wallets, money and cards" {% if category_name == "Wallets, money and cards" %}selected{% endif %}>Wallets, money and cards</option>
+            <option value="Bags and carriers" {% if category_name == "Bags and carriers" %}selected{% endif %}>Bags and carriers</option>
+            <option value="Keys and access items" {% if category_name == "Keys and access items" %}selected{% endif %}>Keys and access items</option>
+            <option value="Clothing & Footwear" {% if category_name == "Clothing & Footwear" %}selected{% endif %}>Clothing & Footwear</option>
+            <option value="Academic & Lab Items" {% if category_name == "Academic & Lab Items" %}selected{% endif %}>Academic & Lab Items</option>
+            <option value="Accessories and jewelleries" {% if category_name == "Accessories and jewelleries" %}selected{% endif %}>Accessories and jewelleries</option>
+            <option value="Sports and fitness gear" {% if category_name == "Sports and fitness gear" %}selected{% endif %}>Sports and fitness gear</option>
+            <option value="Vehicles and vehicle accessories" {% if category_name == "Vehicles and vehicle accessories" %}selected{% endif %}>Vehicles and vehicle accessories</option>
+            <option value="Personal Care & Health items" {% if category_name == "Personal Care & Health items" %}selected{% endif %}>Personal Care & Health items</option>
+            <option value="Food, drink and utensils" {% if category_name == "Food, drink and utensils" %}selected{% endif %}>Food, drink and utensils</option>
+            <option value="Others" {% if category_name == "Others" %}selected{% endif %}>Others</option>
         </select>
-    </h1>
+    </label>
     <h1>{{ page_title }}</h1>
 
     {% if items %}
@@ -61,18 +90,17 @@
                 <td>{{ item.location }}</td>
                 <td>{{ item.created_at.strftime("%d %b %Y") }}</td>
                 <td>{{ item.status }}</td>
+
                 <td>
                     {{ item.reporter.name }}<br>
                     {{ item.reporter.email }}<br>
                     
-                    <!-- Added data-reporter-email attribute -->
                     <button type="button" class="btn-report report_to_admin_btn" 
                             data-item-id="{{ item.id }}" 
                             data-reporter-email="{{ item.reporter.email }}">
                         Report to Admin
                     </button>
 
-                    <!-- Hidden form container -->
                     <div class="report_form_container" style="display: none; margin-top: 10px;">
                         <textarea class="report_description" placeholder="Enter report details..." rows="3" cols="30"></textarea><br>
                         <button type="button" class="submit_report_btn">Submit</button>
@@ -80,6 +108,7 @@
                     </div>
                 </td>
             </tr>
+
             {% endfor %}
 
         </tbody>
@@ -89,6 +118,9 @@
     <p>No items reported yet.</p>
 
     {% endif %}
+    </main>
+
+    <script src="../js/Report_Admin.js" ></script>
 
     <script src="../js/ItemsPage.js"></script>
 

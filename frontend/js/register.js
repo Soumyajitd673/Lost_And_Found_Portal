@@ -54,13 +54,23 @@ registerForm.addEventListener("submit", function (event) {
         return;
     }
 
+    const userData = {
+        name: inputName.value.trim(),
+        email: inputEmail.value.trim(),
+        password: inputPass.value.trim()
+    };
+
 
     fetch("/user/register", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(userData)
+        body: JSON.stringify({
+            name: inputName.value.trim(),
+            email: inputEmail.value.trim(),
+            password: inputPass.value
+        })
     })
     .then(response => {
         if (!response.ok) {

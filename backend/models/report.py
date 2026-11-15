@@ -10,17 +10,18 @@ class Report(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    reporter_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    reporter_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
 
-    reported_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    reported_user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
 
     report_description = Column(String(500), nullable=False)
 
-    status = Column(String(20), default="pending")
+    status = Column(String(20), default="Pending")
 
     created_at = Column(DateTime, server_default=func.now())
 
-    admin_note = Column(String(500))
-
     resolved_at = Column(DateTime)
+
+    reporter = relationship("User", foreign_keys=[reporter_id])
+    reported_user = relationship("User", foreign_keys=[reported_user_id])
 

@@ -3,8 +3,9 @@ from typing import Optional
 from sqlalchemy.orm import Session
 
 from backend.schema.Item_Schema import Item_Schema
+from backend.schema.Item_ID import Item_ID
 from backend.database.db import get_db
-from backend.service import file_service, item_service
+from backend.service import file_service, item_service, user_service
 from backend.curr_user import get_current_user
 from backend.templates import templates
 
@@ -13,14 +14,19 @@ router = APIRouter(prefix="/item", tags=["item"])
 
 
 @router.get("/lost")
-def get_lost_items(request: Request, db: Session = Depends(get_db)):
+def get_lost_items(
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
 
     lost_items = item_service.get_items(db, "Lost")
+    user_details = user_service.get_user_details(user_id, db)
 
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": lost_items, "page_title": "Reported Lost Items"}
+        context={"items": lost_items, "page_title": "Reported Lost Items", **user_details}
     )
 
 
@@ -46,17 +52,22 @@ def report_lost_item(
 
 
     return True
-    
+
 
 @router.get("/found")
-def get_found_items(request: Request, db: Session = Depends(get_db)):
+def get_found_items(
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
 
     found_items = item_service.get_items(db, "Found")
+    user_details = user_service.get_user_details(user_id, db)
 
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": found_items, "page_title": "Reported Found Items"}
+        context={"items": found_items, "page_title": "Reported Found Items", **user_details}
     )
 
 
@@ -84,7 +95,7 @@ def report_found_item(
 
 
 @router.get("/report_form")
-def get_report_form(request: Request):
+def get_report_form(request: Request, user_id: int = Depends(get_current_user)):
 
     return templates.TemplateResponse(
         request=request,
@@ -102,13 +113,18 @@ def get_lost_item_by_category(
     ):
 
     category_items = item_service.get_items_by_category(db, category_name, "Lost")
+    user_details = user_service.get_user_details(user_id, db)
 
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": category_items, "page_title": f"Reported Lost Items \nCategory: {category_name}"}
+        context={
+            "items": category_items,
+            "page_title": f"Reported Lost Items - {category_name}",
+            "category_name": category_name,
+            **user_details,
+        }
     )
-
 
 @router.get("/found/{category_name}")
 def get_lost_item_by_category(
@@ -119,9 +135,43 @@ def get_lost_item_by_category(
     ):
 
     category_items = item_service.get_items_by_category(db, category_name, "Found")
+    user_details = user_service.get_user_details(user_id, db)
 
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": category_items, "page_title": f"Reported Found Items \nCategory: {category_name}"}
+        context={
+            "items": category_items,
+            "page_title": f"Reported Found Items - {category_name}",
+            "category_name": category_name,
+            **user_details,
+        }
     )
+
+
+@router.post("/returned")
+def item_returned(
+    item_id: Item_ID,
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
+
+    try:
+        item = item_service.mark_as_returned(db, item_id.id, user_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.post("/delete")
+def item_returned(
+    item_id: Item_ID,
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
+
+    try:
+        item = item_service.delete_item(db, item_id.id, user_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))

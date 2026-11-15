@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from backend.schema.Login_Register_Info_Schema import Login_Info, Register_Info
+from backend.schema.Delete_Account_Request import DeleteAccountRequest
 from backend.service import user_service, otp_service, item_service
 from backend.templates import templates
 from backend.database.db import get_db
@@ -53,7 +54,6 @@ def register(
     db: Session = Depends(get_db)
 ):
 
-    # Check if the email is verified
     if not otp_service.is_email_verified(register_info.email):
         raise HTTPException(status_code=400, detail="Verify your email before registering.")
 
@@ -82,12 +82,12 @@ def get_user_dashboard(
     user_id: int = Depends(get_current_user)
     ):
 
-    user_name = user_service.get_user_details(user_id, db).get("user_name")
+    user_details = user_service.get_user_details(user_id, db)
 
     return templates.TemplateResponse(
         request=request,
         name="Dashboard.html",
-        context={"user_name": user_name}
+        context=user_details
     )
 
 @router.get("/profile")
@@ -98,8 +98,35 @@ def get_user_profile(
     ):
 
     user_details = user_service.get_user_details(user_id, db)
-    reported_items = item_service.get_user_reported_items(db, user_id)
 
-    
+    return templates.TemplateResponse(
+        request=request,
+        name='profile.html',
+        context=user_details
+    )
+
+@router.get("/history")
+def get_user_history(
+    request: Request,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+    ):
+
+    user_history = item_service.get_user_reported_items(db, user_id)
+
+    return user_history
 
 
+@router.delete("/delete")
+def delete_account(
+    request: Request,
+    delete_request: DeleteAccountRequest,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user)
+):
+    try:
+        user_service.delete_user(db, user_id, delete_request.password)
+        request.session.clear()
+        return {"message": "Account deleted successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
