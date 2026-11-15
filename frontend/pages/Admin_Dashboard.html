@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../css/Admin_dashboard.css">
+</head>
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <h2>Campus Find</h2>
+        <p>Administration</p>
+        <a class="active" href="/report">User reports</a>
+        <a href="/user/dashboard">Back to portal</a>
+        <a href="/user/logout">Sign out</a>
+    </aside>
+
+    <main class="main">
+        <header>
+            <div>
+                <h1>Issue Management</h1>
+                <p>Manage and resolve user complaints.</p>
+            </div>
+            <span class="admin">Administrator</span>
+        </header>
+
+        <section class="stats">
+            <div class="stat">
+                <h2>{{ total }}</h2>
+                <p>Total Reports</p>
+            </div>
+            <div class="stat">
+                <h2>{{ pending }}</h2>
+                <p>Pending</p> 
+            </div>
+            <div class="stat">
+                <h2>{{ resolve }}</h2>
+                <p>Resolved</p>
+            </div>
+        </section>
+
+        <section class="reports">
+            <h2>User Reports</h2>
+            {% for report in pending_reports %}
+            <div class="report-card">
+                <div class="report-header">
+                    <h3>Report #{{ report.id }}</h3>
+                    <span class="pending">{{ report.status }}</span>
+                </div>
+
+                <div class="users">
+                    <div>
+                        <small>REPORTED BY</small>
+                        <h4>{{ report.reporter.name if report.reporter else "Deleted user" }}</h4>
+                        <p>{{ report.reporter.email if report.reporter else "" }}</p>
+                    </div>
+                    <div>
+                        <small>REPORTED USER</small>
+                        <h4>{{ report.reported_user.name if report.reported_user else "Deleted user" }}</h4>
+                        <p>{{ report.reported_user.email if report.reported_user else "" }}</p>
+                    </div>
+                </div>
+
+                <p class="description">
+                    {{ report.report_description }}
+                </p>
+
+                <form action="/report/{{ report.id }}/resolve" method="post">
+                    <button class="resolve" type="submit">Mark as Resolved</button>
+                </form>
+            </div>
+            {% else %}
+            <p class="description">There are no pending reports.</p>
+            {% endfor %}
+        </section>
+    </main>
+</div>
+
+</body>
+</html>

@@ -4,7 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.sql import func
 
 from backend.models.item import Item
-from backend.models.category import Category 
+from backend.models.category import Category
 from backend.schema.Item_Schema import Item_Schema
 
 
@@ -15,8 +15,8 @@ def get_category_id(db: Session, category: str):
     return category_id
 
 def register_item(
-        data: Item_Schema, 
-        report: str, 
+        data: Item_Schema,
+        report: str,
         image_path: str,
         user_id: int,
         db: Session
@@ -56,7 +56,11 @@ def get_items(db: Session, report_type: str):
 
 def get_items_by_category(db: Session, category: str, report_type: str):
 
-    return db.scalars(select(Item).where(Item.report == report_type, Item.category == category)).all()
+    return db.scalars(
+        select(Item)
+        .join(Item.category)
+        .where(Item.report == report_type, Category.name == category)
+    ).all()
 
 def get_items_count(db: Session, report_type: str):
 
@@ -105,7 +109,7 @@ def mark_as_returned(db: Session, item_id: int, user_id: int):
 def delete_item(db: Session, item_id: int, user_id: int):
 
     item = get_item_by_id(db, item_id)
-    
+
     if not item or item.reported_by != user_id:
         raise ValueError()
 
@@ -113,4 +117,3 @@ def delete_item(db: Session, item_id: int, user_id: int):
     db.commit()
 
     return item
-    

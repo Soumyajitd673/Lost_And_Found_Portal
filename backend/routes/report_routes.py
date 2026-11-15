@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Request, Depends, HTTPException
+from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
 from backend.service import user_service, report_service
@@ -23,16 +24,34 @@ def get_reports_page(
 
         return templates.TemplateResponse(
             request=request,
-            name="admin_dashboard.html",
+            name="Admin_Dashboard.html",
             context={
                 'pending_reports': pending_reports,
                 'pending': report_count.get('pending', 0),
-                'resolve': report_count.get('resolved', 0)
+                'resolve': report_count.get('resolved', 0),
+                'total': sum(report_count.values()),
             }
         )
-    
+
     else:
-        raise HTTPException(status_code=400, detail="Only Admin Access.")
+        raise HTTPException(status_code=403, detail="Only Admin Access.")
+
+
+@router.post("/{report_id}/resolve")
+def resolve_report(
+    report_id: int,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if not user_service.is_admin(db, user_id):
+        raise HTTPException(status_code=403, detail="Only Admin Access.")
+
+    try:
+        report_service.resolve_report(db, report_id)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+    return RedirectResponse(url="/report", status_code=303)
 
 
 @router.post("")
@@ -46,7 +65,6 @@ def create_report(
         report = report_service.create_report(db, report_schema, user_id)
 
         return True
-     
+
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
-        

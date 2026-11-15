@@ -82,12 +82,12 @@ def get_user_dashboard(
     user_id: int = Depends(get_current_user)
     ):
 
-    user_name = user_service.get_user_details(user_id, db).get("user_name")
+    user_details = user_service.get_user_details(user_id, db)
 
     return templates.TemplateResponse(
         request=request,
         name="Dashboard.html",
-        context={"user_name": user_name}
+        context=user_details
     )
 
 @router.get("/profile")
