@@ -20,7 +20,9 @@
             <li><a href="/user/dashboard" class="active">Dashboard</a></li>
             <li><a href="/item/lost">Lost Items</a></li>
             <li><a href="/item/found">Found Items</a></li>
-            <li><button id="adminBtn" class="nav-btn admin-btn hidden">Admin Panel</button></li>
+            {% if user_role == "admin" %}
+            <li><a href="/report" class="nav-btn admin-btn">Admin Panel</a></li>
+            {% endif %}
             <li><a href="/user/profile"><button class="nav-btn profile-btn">{{ user_name }}</button></a></li>
             <li><a href="/user/logout" class="signout-link">Sign Out</a></li>
         </ul>

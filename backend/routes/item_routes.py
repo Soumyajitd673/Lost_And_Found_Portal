@@ -21,12 +21,12 @@ def get_lost_items(
 ):
 
     lost_items = item_service.get_items(db, "Lost")
-    user_name = user_service.get_user_details(user_id, db).get("user_name")
+    user_details = user_service.get_user_details(user_id, db)
 
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": lost_items, "page_title": "Reported Lost Items", "user_name": user_name}
+        context={"items": lost_items, "page_title": "Reported Lost Items", **user_details}
     )
 
 
@@ -52,7 +52,7 @@ def report_lost_item(
 
 
     return True
-    
+
 
 @router.get("/found")
 def get_found_items(
@@ -62,12 +62,12 @@ def get_found_items(
 ):
 
     found_items = item_service.get_items(db, "Found")
-    user_name = user_service.get_user_details(user_id, db).get("user_name")
+    user_details = user_service.get_user_details(user_id, db)
 
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": found_items, "page_title": "Reported Found Items", "user_name": user_name}
+        context={"items": found_items, "page_title": "Reported Found Items", **user_details}
     )
 
 
@@ -113,11 +113,17 @@ def get_lost_item_by_category(
     ):
 
     category_items = item_service.get_items_by_category(db, category_name, "Lost")
+    user_details = user_service.get_user_details(user_id, db)
 
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": category_items, "page_title": f"Reported Lost Items \nCategory: {category_name}"}
+        context={
+            "items": category_items,
+            "page_title": f"Reported Lost Items - {category_name}",
+            "category_name": category_name,
+            **user_details,
+        }
     )
 
 @router.get("/found/{category_name}")
@@ -129,11 +135,17 @@ def get_lost_item_by_category(
     ):
 
     category_items = item_service.get_items_by_category(db, category_name, "Found")
+    user_details = user_service.get_user_details(user_id, db)
 
     return templates.TemplateResponse(
         request=request,
         name="ItemsPage.html",
-        context={"items": category_items, "page_title": f"Reported Found Items \nCategory: {category_name}"}
+        context={
+            "items": category_items,
+            "page_title": f"Reported Found Items - {category_name}",
+            "category_name": category_name,
+            **user_details,
+        }
     )
 
 
@@ -144,7 +156,7 @@ def item_returned(
     db: Session = Depends(get_db),
     user_id: int = Depends(get_current_user)
 ):
-    
+
     try:
         item = item_service.mark_as_returned(db, item_id.id, user_id)
     except ValueError as e:
@@ -158,7 +170,7 @@ def item_returned(
     db: Session = Depends(get_db),
     user_id: int = Depends(get_current_user)
 ):
-    
+
     try:
         item = item_service.delete_item(db, item_id.id, user_id)
     except ValueError as e:

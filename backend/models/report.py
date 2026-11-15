@@ -22,3 +22,6 @@ class Report(Base):
 
     resolved_at = Column(DateTime)
 
+    reporter = relationship("User", foreign_keys=[reporter_id])
+    reported_user = relationship("User", foreign_keys=[reported_user_id])
+
