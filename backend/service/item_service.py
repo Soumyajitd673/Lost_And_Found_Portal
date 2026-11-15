@@ -52,7 +52,7 @@ def get_item_by_id(db: Session, item_id: int):
 
 def get_items(db: Session, report_type: str):
 
-    return db.scalars(select(Item).where(Item.report == report_type)).all()
+    return db.scalars(select(Item).where(Item.report == report_type).order_by(Item.created_at.desc())).all()
 
 def get_items_by_category(db: Session, category: str, report_type: str):
 
@@ -60,6 +60,7 @@ def get_items_by_category(db: Session, category: str, report_type: str):
         select(Item)
         .join(Item.category)
         .where(Item.report == report_type, Category.name == category)
+        .order_by(Item.created_at.desc())
     ).all()
 
 def get_items_count(db: Session, report_type: str):
@@ -68,7 +69,7 @@ def get_items_count(db: Session, report_type: str):
 
 def get_user_reported_items(db: Session, user_id: int):
 
-    items = db.scalars(select(Item).where(Item.reported_by == user_id)).all()
+    items = db.scalars(select(Item).where(Item.reported_by == user_id).order_by(Item.created_at.desc())).all()
 
     result = {
         "lostItems": [],
