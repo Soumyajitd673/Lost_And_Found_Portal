@@ -6,7 +6,7 @@ reportButtons.forEach(button => {
     const descriptionInput = tdCell.querySelector(".report_description");
     const submitBtn = tdCell.querySelector(".submit_report_btn");
     const cancelBtn = tdCell.querySelector(".cancel_report_btn");
-    
+
     const itemId = button.getAttribute("data-item-id");
     const reporterEmail = button.getAttribute("data-reporter-email");
 
@@ -27,7 +27,7 @@ reportButtons.forEach(button => {
     // Click Submit -> Validate text -> Ask for confirmation
     submitBtn.addEventListener("click", () => {
         const description = descriptionInput.value.trim();
-        
+
         if (!description) {
             alert("Please enter a description before submitting.");
             return;
@@ -36,7 +36,7 @@ reportButtons.forEach(button => {
         const isConfirmed = confirm("Are you sure you want to send this report to the admin?");
 
         if (isConfirmed) {
-            fetch('/report', { 
+            fetch('/report', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -46,11 +46,11 @@ reportButtons.forEach(button => {
             })
             .then(response => {
                 if (!response.ok) throw new Error("Failed to submit report");
-                
-                return response.json(); 
+
+                return response.json();
             })
             .then(data => {
-                
+
                 if (data === true) {
                     alert("Report submitted successfully!");
                     formContainer.style.display = "none";
