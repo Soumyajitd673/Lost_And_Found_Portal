@@ -1,8 +1,12 @@
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", sans-serif;
     background-color: #eef1f5;
     margin: 0;
+    padding: 0;
+}
+
+.items-content {
     padding: 30px 20px;
 }
 
