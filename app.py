@@ -13,6 +13,7 @@ from backend.models.user import User
 from backend.models.item import Item
 from backend.models.category import Category
 from backend.models import user, item, category
+from backend.database.setup_categories import setup_categories
 
 from backend.curr_user import NotAuthenticated
 
@@ -33,8 +34,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
-Base.metadata.create_all(bind=engine)
 
+Base.metadata.create_all(bind=engine)
+setup_categories()
 
 app.add_middleware(
     SessionMiddleware,

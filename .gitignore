@@ -5,5 +5,4 @@ __pycache__/
 *.pyo
 *.pyd
 /backend/uploads
-credentials.json
 gmail_token.json
