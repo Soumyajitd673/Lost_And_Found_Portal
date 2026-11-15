@@ -34,7 +34,7 @@ def create_report(db: Session, data: Report_Schema, reporter_id: int, ):
 
 
 def get_all_pending_reports(db: Session):
-    return db.scalars(select(Report).where(Report.status == "Pending")).all()
+    return db.scalars(select(Report).where(Report.status == "Pending").order_by(Report.created_at.desc())).all()
 
 def get_reports_count(db: Session):
 
