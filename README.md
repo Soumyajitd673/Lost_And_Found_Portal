@@ -97,7 +97,7 @@ DB_USER=<mysql_user_name>
 DB_PASSWORD=<password>
 DB_HOST=localhost
 DB_PORT=3306
-DB_NAME=FindhubDB
+DB_NAME=CampusFindDB
 
 # Session Configuration
 SESSION_KEY=your_secret_session_key
